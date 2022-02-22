@@ -25,12 +25,6 @@ public class LocalCalculator {
         Calculator calculator = calculatorService.getCalculatorPort();
         System.out.println(calculator.additionOperator(1, 2));
         calculator.squareRoot(16);
-//
-//        // Ура! Теперь можно вызывать удаленный метод
-//        System.out.println(hello.getHelloString("JavaRush"));
-//        hello.getCalculatorPort()
-
-
     }
 
 }

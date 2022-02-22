@@ -11,8 +11,6 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.sql.ResultSet;
 
-import static java.lang.Math.sqrt;
-
 
 public class CalculatorPage extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
