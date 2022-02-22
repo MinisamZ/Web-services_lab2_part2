@@ -1,7 +1,7 @@
 # Web-services_lab2_part2
 Client 
 - Web Service Application with the functionality of Calculator App. 
-- #Following operations:
+#Following operations:
 
 -       Addition operator
 -       Subtraction operator
