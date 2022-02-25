@@ -9,6 +9,8 @@ import java.net.URL;
 public class LocalCalculator {
     public static void main(String[] args) throws MalformedURLException {
 //        cs.getCalculatorPort(ao);
+        double a = Double.parseDouble("request");
+
 //        // создаем ссылку на wsdl описание
         URL url = new URL("http://alex-strix-notebook:8080/JavaEE-WS-1.0-SNAPSHOT/CalculatorService");
 //

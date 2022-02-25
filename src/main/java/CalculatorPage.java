@@ -18,52 +18,7 @@ public class CalculatorPage extends HttpServlet {
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (request.getParameter("first").isEmpty()) {
-            generateView(request, response);
-        } else {
-            response.setContentType("text/html; charset=UTF-8");
-            ResultSet resultSet = null;
-            double a = Double.parseDouble(request.getParameter("first"));
-            double b = Double.parseDouble(request.getParameter("second"));
-
-            URL url = new URL("http://alex-strix-notebook:8080/JavaEE-WS-1.0-SNAPSHOT/CalculatorService");
-            QName qname = new QName("http://iitu.kz/", "CalculatorService");
-            Service service = Service.create(url, qname);
-            CalculatorService calculatorService = new CalculatorService(url, qname);
-            Calculator calculator = calculatorService.getCalculatorPort();
-
-            PrintWriter out = response.getWriter();
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Result</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h2>Result</h2>");
-            switch (request.getParameter("sign")) {
-                case "plus":
-                    out.println("<h1>" + (calculator.additionOperator(a,b)) + "</h1>");
-                    break;
-                case "sub":
-                    out.println("<h1>" + (calculator.subtractionOperator(a,b)) + "</h1>");
-                    break;
-                case "mul":
-                    out.println("<h1>" + (calculator.multiplicationOperator(a,b)) + "</h1>");
-                    break;
-                case "div":
-                    out.println("<h1>" + (calculator.divisionOperator(a,b)) + "</h1>");
-                    break;
-                case "sqrt":
-                    out.println("<h1>" + (calculator.squareRoot(a)) + "</h1>");
-                    break;
-
-                default:
-                    throw new IllegalStateException("Unexpected value: " + request.getParameter("sing"));
-            }
-            out.println("</body>");
-            out.println("</html>");
-        }
-
+        generateView(request, response);
     }
 
     public void generateView(HttpServletRequest request,
@@ -88,8 +43,8 @@ public class CalculatorPage extends HttpServlet {
                 "    </tr>");
 
         out.print("<tr>");
-        out.print("<form>" + "<td><input placeholder=\"1\" name=\"first\">" + "</td>");
-        out.print(" <td><input placeholder=\"2\" name=\"second\">" + "</td>");
+        out.print("<form>" + "<td><input placeholder=\"первое число\" name=\"first\">" + "</td>");
+        out.print(" <td><input placeholder=\"второе число\" name=\"second\">" + "</td>");
         out.println("<td><select name=\"sign\">\n" +
                 "    <option disabled>Выберите операцию</option>\n" +
                 "    <option value='plus'>+</option>\n" +
@@ -103,6 +58,57 @@ public class CalculatorPage extends HttpServlet {
         out.print("</tr>");
 
         out.println("</table>");
+//        if (!request.getParameter("sing").isEmpty()) {
+        double a;
+        double b;
+        try {
+            URL url = new URL("http://alex-strix-notebook:8080/JavaEE-WS-1.0-SNAPSHOT/CalculatorService");
+            QName qname = new QName("http://iitu.kz/", "CalculatorService");
+            Service service = Service.create(url, qname);
+            CalculatorService calculatorService = new CalculatorService(url, qname);
+            Calculator calculator = calculatorService.getCalculatorPort();
+
+            a = Double.parseDouble(request.getParameter("first"));
+            try {
+                b = Double.parseDouble(request.getParameter("second"));
+                out.println("<h2>Result</h2>");
+                switch (request.getParameter("sign")) {
+                    case "plus":
+                        out.println("<h1>" + (calculator.additionOperator(a, b)) + "</h1>");
+                        break;
+                    case "sub":
+                        out.println("<h1>" + (calculator.subtractionOperator(a, b)) + "</h1>");
+                        break;
+                    case "mul":
+                        out.println("<h1>" + (calculator.multiplicationOperator(a, b)) + "</h1>");
+                        break;
+                    case "div":
+                        out.println("<h1>" + (calculator.divisionOperator(a, b)) + "</h1>");
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + request.getParameter("sing"));
+                }
+
+            } catch (NumberFormatException e) {
+                if (request.getParameter("sign").equals("sqrt")) {
+                    out.println("<h2>Result</h2>");
+                    switch (request.getParameter("sign")) {
+
+                        case "sqrt":
+                            out.println("<h1>" + (calculator.squareRoot(a)) + "</h1>");
+                            break;
+
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + request.getParameter("sing"));
+                    }
+                } else
+                    out.println("<h2>second empty</h2>");
+            }
+        } catch (NumberFormatException e) {
+            out.println("<h2>Number Format Exception</h2>");
+        }
+//        }
+
         out.println("</body>");
         out.println("</html>");
 
